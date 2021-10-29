@@ -1,5 +1,63 @@
 var express = require('express');
 var router = express.Router();
+const {User} = require('../lib/models')
+
+
+// REST API - Create your own API with a database
+
+// Users
+// Add a user - POST /users
+router.post('/users', async function(req, res, next) {
+    // talk to the db and get a list of all the users
+    let newUser = await User.create(req.body)
+    console.log('req.body is', req.body)
+    res.json(newUser)
+});
+// Get all users - GET /users
+// http://localhost:3000/api/users
+router.get('/users', async function(req, res, next) {
+    // talk to the db and get a list of all the users
+    let allUsers = await User.findAll()
+    res.json(allUsers)
+});
+// Get one user - GET /users/<id of the user>
+router.get('/users/:id', async function(req, res, next) {
+    // talk to the db and get a list of all the users
+    let oneUser = await User.findOne({where: {id: req.params.id}})
+    res.json(oneUser)
+});
+// Update a user - PUT /users/1
+router.put('/users/:id', async function(req, res, next) {
+    // talk to the db and get a list of all the users
+    let oneUser = await User.update(req.body, {
+        where: {
+            id: req.params.id
+        }
+    });
+    res.json(oneUser)
+});
+// Delete a user - DELETE /users/1
+router.delete('/users/:id', async function(req, res, next) {
+    console.log('req.params are', req.params)
+    await User.destroy({
+        where: {
+            id: req.params.id
+        }
+    });
+    // talk to the db and get a list of all the users
+    // let newUser = await User.create(req.body)
+    // console.log('req.body is', req.body)
+    res.json({})
+});
+
+
+
+
+
+
+
+
+/******************************************************************************************************************************************/
 
 /* GET home page. */
 // '/api' + '/' = '/api'
